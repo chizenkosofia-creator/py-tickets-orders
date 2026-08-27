@@ -77,6 +77,8 @@ class MovieViewSet(viewsets.ModelViewSet):
                     queryset = queryset.filter(title__icontains=title)
 
         return queryset.distinct()
+
+
 class MovieSessionViewSet(viewsets.ModelViewSet):
     pagination_class = None
     queryset = MovieSession.objects.all()
