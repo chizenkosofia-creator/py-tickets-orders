@@ -40,8 +40,8 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['genres', 'actors']
-    search_fields = ['title']
+    filterset_fields = ["genres", "actors"]
+    search_fields = ["title"]
 
     def get_queryset(self) -> QuerySet[Movie]:
         queryset = self.queryset
