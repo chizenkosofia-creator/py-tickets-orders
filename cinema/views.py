@@ -5,10 +5,8 @@ from rest_framework.pagination import PageNumberPagination
 
 from cinema.models import Movie, MovieSession, Order
 from cinema.serializers import (
-    MovieSerializer,
     MovieSessionDetailSerializer,
     MovieSessionListSerializer,
-    MovieSessionSerializer,
     OrderListSerializer,
     OrderSerializer,
 )
