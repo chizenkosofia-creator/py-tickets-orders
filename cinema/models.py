@@ -92,7 +92,8 @@ class Ticket(models.Model):
             raise error_to_raise(
                 {
                     "seat": (
-                        f"seat must be in range [1, {seats_in_row}], got {seat}"
+                        f"seat must be in range [1, "
+                        f"{seats_in_row}], got {seat}"
                     )
                 }
             )
@@ -127,7 +128,8 @@ class Ticket(models.Model):
         )
 
     def __str__(self):
-        return f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
+        return (f"{str(self.movie_session)} "
+                f"(row: {self.row}, seat: {self.seat})")
 
     class Meta:
         constraints = [
