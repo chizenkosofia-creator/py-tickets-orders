@@ -53,8 +53,16 @@ class MovieRetrieveSerializer(MovieSerializer):
     actors = ActorSerializer(many=True)
 
 
+class TicketSeatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = ("row", "seat")
+
+
 class MovieSessionSerializer(serializers.ModelSerializer):
-    taken_places = serializers.SerializerMethodField()
+    taken_places = TicketSeatsSerializer(
+        source="tickets", many=True, read_only=True
+    )
     tickets_available = serializers.SerializerMethodField()
 
     class Meta:
@@ -67,12 +75,6 @@ class MovieSessionSerializer(serializers.ModelSerializer):
             "taken_places",
             "tickets_available",
         )
-
-    def get_taken_places(self, obj) -> list[dict]:
-        return [
-            {"row": ticket.row, "seat": ticket.seat}
-            for ticket in obj.tickets.all()
-        ]
 
     def get_tickets_available(self, obj) -> int:
         taken_count = getattr(
@@ -135,15 +137,9 @@ class TicketListSerializer(TicketSerializer):
     movie_session = MovieSessionListSerializer(read_only=True)
 
 
-class TicketSeatsSerializer(TicketSerializer):
-    class Meta:
-        model = Ticket
-        fields = ("row", "seat")
-
-
 class OrderSerializer(serializers.ModelSerializer):
-    tickets = TicketListSerializer(many=True,
-                                   read_only=False, allow_empty=False)
+    tickets = TicketSerializer(many=True, read_only=False,
+                               allow_empty=False)
 
     class Meta:
         model = Order
