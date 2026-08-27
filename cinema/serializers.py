@@ -37,6 +37,16 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
+class MovieListSerializer(MovieSerializer):
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
+
+
+class MovieDetailSerializer(MovieSerializer):
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
+
+
 class TicketSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         data = super().validate(attrs=attrs)
@@ -126,8 +136,8 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
-    movie = serializers.SerializerMethodField()
-    cinema_hall = serializers.SerializerMethodField()
+    movie = MovieDetailSerializer(read_only=True)
+    cinema_hall = CinemaHallSerializer(read_only=True)
     taken_places = TicketSeatsSerializer(
         source="tickets", many=True, read_only=True
     )
@@ -135,26 +145,3 @@ class MovieSessionDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
         fields = ("id", "show_time", "movie", "cinema_hall", "taken_places")
-
-    def get_movie(self, obj):
-        actors = [
-            f"{actor.first_name} {actor.last_name}"
-            for actor in obj.movie.actors.all()
-        ]
-        return {
-            "id": obj.movie.id,
-            "title": obj.movie.title,
-            "description": obj.movie.description,
-            "duration": obj.movie.duration,
-            "genres": [genre.name for genre in obj.movie.genres.all()],
-            "actors": actors,
-        }
-
-    def get_cinema_hall(self, obj):
-        return {
-            "id": obj.cinema_hall.id,
-            "name": obj.cinema_hall.name,
-            "rows": obj.cinema_hall.rows,
-            "seats_in_row": obj.cinema_hall.seats_in_row,
-            "capacity": obj.cinema_hall.capacity,
-        }
