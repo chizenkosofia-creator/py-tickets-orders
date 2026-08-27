@@ -74,7 +74,8 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.prefetch_related("genres", "actors").order_by("id")
+    queryset = Movie.objects.prefetch_related(
+        "genres", "actors").order_by("id")
     serializer_class = MovieSerializer
     pagination_class = None
 
@@ -138,4 +139,3 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return MovieSessionDetailSerializer
         return super().get_serializer_class()
-    
