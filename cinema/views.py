@@ -34,6 +34,7 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
