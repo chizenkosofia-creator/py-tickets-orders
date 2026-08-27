@@ -17,6 +17,7 @@ from cinema.serializers import (
 
 
 class GenreViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
@@ -28,11 +29,13 @@ class ActorViewSet(viewsets.ModelViewSet):
 
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
 
 
 class MovieViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     queryset = Movie.objects.all()
 
     def get_queryset(self) -> QuerySet[Movie]:
@@ -51,6 +54,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     queryset = MovieSession.objects.all()
 
     def get_queryset(self) -> QuerySet[MovieSession]:
