@@ -1,7 +1,8 @@
 from django.db.models import QuerySet
 from rest_framework import viewsets
 from rest_framework.serializers import Serializer
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
 from cinema.serializers import (
     GenreSerializer,
@@ -37,6 +38,10 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 class MovieViewSet(viewsets.ModelViewSet):
     pagination_class = None
     queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['genres', 'actors']
+    search_fields = ['title']
 
     def get_queryset(self) -> QuerySet[Movie]:
         queryset = self.queryset
